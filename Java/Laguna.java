@@ -16,14 +16,71 @@ public class Laguna {
     }
 
     public void comenzarJuego(){
-        while(!this.hayGanador() || this.sinMovimientos()){
-            this.jugador.mueveRana();
+        while(!this.hayGanador() || !this.sinMovimientos()){
+            this.mostrarRocas();
+            this.moverRana();
         }
+
         if(this.hayGanador())
             System.out.println("Felicidades!!! " + this.jugador.getNombre() + " has logrado finalizar el juego");
         else
             System.out.println("Has perdido!!! " + this.jugador.getNombre() + " sigue intentando...");
 
     }
+
+    private boolean hayGanador(){
+        if(!this.rana[0].vaPara("<")) return false;
+        if(!this.rana[1].vaPara("<")) return false;
+        if(!this.rana[2].vaPara("<")) return false;
+        if(!this.rana[3].vaPara("-")) return false;
+        if(!this.rana[4].vaPara(">")) return false;
+        if(!this.rana[5].vaPara(">")) return false;
+        if(!this.rana[6].vaPara(">")) return false;
+
+        return true;
+    }
+
+    private boolean sinMovimientos(){
+        for(int i=0; i<7; i++)
+            if(!this.ranaTieneMovimiento(i)) return false;
+        return true;
+
+    }
+
+    private boolean ranaTieneMovimiento(int i){
+        if(this.rana[i].vaPara("<"))
+            if(i>=2 && this.rana[i-1].vaPara("-") || this.rana[i-2].vaPara("-")) return true;
+            else if(i==1 && this.rana[i-1].vaPara("-")) return true; 
+        
+        if(this.rana[i].vaPara(">"))
+            if(i<= 4 && this.rana[i+1].vaPara("-") || this.rana[i+2].vaPara("-")) return true;
+            else if(i==5 && this.rana[i+1].vaPara("-")) return true; 
+
+        if(this.rana[i].vaPara("-")) return true;
+
+        return false;
+    }
+
+    public void mostrarRocas(){
+        System.out.println("Estado del Juego: ");
+        for(Rana rana: this.rana)
+            System.out.print(rana + " ");
+    }
     
+    public void moverRana(){
+        int r, m;
+        Rana auxiliar;
+        do{
+            r = this.jugador.escogerRana();
+            m = this.jugador.escogerMovimiento(this.rana[r], r);
+        }while(this.verificarMovimientoInvalido(r, m));
+
+        auxiliar = this.rana[m];
+        this.rana[m] = this.rana[r];
+        this.rana[r] = auxiliar;
+    }
+
+    private boolean verificarMovimientoInvalido(int rana, int movimiento){
+        return (((movimiento == rana + 1 || movimiento == rana + 2) || (movimiento == rana - 1 || movimiento == rana - 2)) &&this.rana[movimiento].vaPara("-"));
+    }
 }

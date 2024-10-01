@@ -7,5 +7,16 @@ public class Rana {
         this.sentido = sentido;
     }
 
-    
+    public String getSentido(){
+        return this.sentido;
+    }
+
+    public boolean vaPara(String sentido){
+        return this.sentido == sentido;
+    }
+
+    @Override
+    public String toString(){
+        return this.sentido;
+    }
 }
