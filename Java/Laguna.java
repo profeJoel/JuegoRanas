@@ -16,7 +16,7 @@ public class Laguna {
     }
 
     public void comenzarJuego(){
-        while(!this.hayGanador() || !this.sinMovimientos()){
+        while(!this.hayGanador() && !this.sinMovimientos()){
             this.mostrarRocas();
             this.moverRana();
         }
@@ -50,11 +50,14 @@ public class Laguna {
     private boolean ranaTieneMovimiento(int i){
         if(this.rana[i].vaPara("<"))
             if(i>=2 && this.rana[i-1].vaPara("-") || this.rana[i-2].vaPara("-")) return true;
-            else if(i==1 && this.rana[i-1].vaPara("-")) return true; 
+            else if(i==1 && this.rana[i-1].vaPara("-"))
+                return true;
+                else if(i==0)return true; 
         
         if(this.rana[i].vaPara(">"))
             if(i<= 4 && this.rana[i+1].vaPara("-") || this.rana[i+2].vaPara("-")) return true;
             else if(i==5 && this.rana[i+1].vaPara("-")) return true; 
+                else if(i==6) return true;
 
         if(this.rana[i].vaPara("-")) return true;
 
@@ -62,9 +65,14 @@ public class Laguna {
     }
 
     public void mostrarRocas(){
-        System.out.println("Estado del Juego: ");
+        System.out.println("\n***********************\nEstado del Juego: ");
         for(Rana rana: this.rana)
             System.out.print(rana + " ");
+        System.out.println("");
+        for(int i=0; i<7; i++)
+            System.out.print(i + " ");
+
+        System.out.println("\n***********************\n");
     }
     
     public void moverRana(){
@@ -73,14 +81,14 @@ public class Laguna {
         do{
             r = this.jugador.escogerRana();
             m = this.jugador.escogerMovimiento(this.rana[r], r);
-        }while(this.verificarMovimientoInvalido(r, m));
+        }while(!this.verificarMovimientoValido(r, m));
 
         auxiliar = this.rana[m];
         this.rana[m] = this.rana[r];
         this.rana[r] = auxiliar;
     }
 
-    private boolean verificarMovimientoInvalido(int rana, int movimiento){
+    private boolean verificarMovimientoValido(int rana, int movimiento){
         return (((movimiento == rana + 1 || movimiento == rana + 2) || (movimiento == rana - 1 || movimiento == rana - 2)) &&this.rana[movimiento].vaPara("-"));
     }
 }
