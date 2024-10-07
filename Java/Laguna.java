@@ -21,6 +21,7 @@ public class Laguna {
             this.moverRana();
         }
 
+        this.mostrarRocas();
         if(this.hayGanador())
             System.out.println("Felicidades!!! " + this.jugador.getNombre() + " has logrado finalizar el juego");
         else
@@ -49,13 +50,13 @@ public class Laguna {
 
     private boolean ranaTieneMovimiento(int i){
         if(this.rana[i].vaPara("<"))
-            if(i>=2 && this.rana[i-1].vaPara("-") || this.rana[i-2].vaPara("-")) return true;
+            if(i>=2 && (this.rana[i-1].vaPara("-") || this.rana[i-2].vaPara("-"))) return true;
             else if(i==1 && this.rana[i-1].vaPara("-"))
                 return true;
                 else if(i==0)return true; 
         
         if(this.rana[i].vaPara(">"))
-            if(i<= 4 && this.rana[i+1].vaPara("-") || this.rana[i+2].vaPara("-")) return true;
+            if(i<= 4 && (this.rana[i+1].vaPara("-") || this.rana[i+2].vaPara("-"))) return true;
             else if(i==5 && this.rana[i+1].vaPara("-")) return true; 
                 else if(i==6) return true;
 
@@ -89,6 +90,6 @@ public class Laguna {
     }
 
     private boolean verificarMovimientoValido(int rana, int movimiento){
-        return (((movimiento == rana + 1 || movimiento == rana + 2) || (movimiento == rana - 1 || movimiento == rana - 2)) &&this.rana[movimiento].vaPara("-"));
+        return (((movimiento == rana + 1 || movimiento == rana + 2) || (movimiento == rana - 1 || movimiento == rana - 2)) && this.rana[movimiento].vaPara("-"));
     }
 }
